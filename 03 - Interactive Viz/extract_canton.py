@@ -10,9 +10,10 @@ import pandas as pd
 url = "http://api.geonames.org/search?"
 username = 'cataphile22'
 
-def extractCanton(q, raw = None):
-    """Try to find the canton of the string given in arg (typically a university name). Beware this function is performing a request to geonames."""
-    if raw == None: # if raw is not set, it is equal to q
+def extractCanton(dataframe, q, raw = None):
+    """Try to find the canton of the string given in arg (typically a university name). Beware this function is performing a request to geonames.
+    The parameter dataframe is the dataframe created from the cvs file ExtractGrant"""
+	if raw == None: # if raw is not set, it is equal to q
         raw = q
     param = {'q': q, 'country': 'CH', 'type': 'json'  ,'username': username}
     
@@ -20,5 +21,5 @@ def extractCanton(q, raw = None):
     df_ = pd.read_json(res.content)
     if df_.geonames.count() > 0 :
         df_.geonames[0]['adminCode1']
-        x['Canton'][(x['Canton'] == "") & (x['University'] == raw)] = df_.geonames[0]['adminCode1']
+        dataframe['Canton'][(dataframe['Canton'] == "") & (dataframe['University'] == raw)] = df_.geonames[0]['adminCode1']
     return
